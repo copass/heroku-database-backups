@@ -4,10 +4,10 @@ Simple heroku app with a bash script for capturing heroku database backups and c
 ## Installation
 
 
-First create a project on heroku with the [heroku-buildpack-multi](https://github.com/ddollar/heroku-buildpack-multi).
+First create a project on heroku with the [heroku-buildpack-multi](https://github.com/heroku/heroku-buildpack-multi).
 
 ```
-heroku create my-database-backups --buildpack https://github.com/ddollar/heroku-buildpack-multi
+heroku create my-database-backups --buildpack https://github.com/heroku/heroku-buildpack-multi
 ```
 
 Next push this project to your heroku projects git repository.
@@ -20,8 +20,7 @@ git push heroku master
 Now we need to set some environment variables in order to get the heroku cli working properly using the [heroku-buildpack-toolbet](We are using the https://github.com/gregburek/heroku-buildpack-toolbelt.git).
 
 ```
-heroku config:add HEROKU_TOOLBELT_API_EMAIL=your-email@gmail.com -a my-database-backups
-heroku config:add HEROKU_TOOLBELT_API_PASSWORD=`heroku auth:token` -a my-database-backups
+heroku config:add HEROKU_API_KEY=`heroku auth:token` -a my-database-backups
 ```
 
 Next we need to add the amazon key and secret.
@@ -42,7 +41,7 @@ Be careful when setting the S3_BUCKET_PATH to leave off a trailing forward slash
 Finally, we need to add heroku scheduler and call [backup.sh](https://github.com/kbaum/heroku-database-backups/blob/master/bin/backup.sh) on a regular interval with the appropriate database and app.
 
 ```
-heroku addons:add scheduler -a my-database-backups
+heroku addons:create scheduler -a my-database-backups
 ```
 
 Now open it up, in your browser with:
